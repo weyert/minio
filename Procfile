@@ -1,1 +1,1 @@
-web: server /data
+web: --compat server /data
