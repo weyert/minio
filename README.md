@@ -7,8 +7,8 @@ See here: https://github.com/slypix/minio-dokku
 ## Add env vars for access
 
 ```
-dokku config:set minio MINIO_ACCESS_KEY=$(echo `openssl rand -base64 45` | tr -d \=+ | cut -c 1-20)
-dokku config:set minio MINIO_SECRET_KEY=$(echo `openssl rand -base64 45` | tr -d \=+ | cut -c 1-32)
+dokku config:set restauranto-s3 MINIO_ACCESS_KEY=$(echo `openssl rand -base64 45` | tr -d \=+ | cut -c 1-20)
+dokku config:set restauranto-s3 MINIO_SECRET_KEY=$(echo `openssl rand -base64 45` | tr -d \=+ | cut -c 1-32)
 ```
 
 ## Fix ports and SSL
@@ -16,19 +16,26 @@ dokku config:set minio MINIO_SECRET_KEY=$(echo `openssl rand -base64 45` | tr -d
 Order is important because dokku-letsencrypt adds 443 port.
 
 ```
-dokku proxy:report minio
-dokku proxy:ports-add minio http:80:9000
-dokku proxy:ports-remove minio http:9000:9000
-dokku letsencrypt minio
-dokku letsencrypt:cron-job --add minio
+dokku proxy:report restauranto-s3
+dokku proxy:ports-add restauranto-s3 http:80:9000
+dokku proxy:ports-remove 4estauranto-s3 http:9000:9000
+dokku letsencrypt 4estauranto-s3
+dokku letsencrypt:cron-job --add restauranto-s3
 ```
 
 ## Persistent storage
 
 ```
-mkdir -p /var/lib/dokku/data/storage/minio
-chown -R 32769:32769 /var/lib/dokku/data/storage/minio
-dokku storage:mount minio /var/lib/dokku/data/storage/minio:/data
+mkdir -p /var/lib/dokku/data/storage/restauranto-storage
+chown -R 32769:32769 /var/lib/dokku/data/storage/restauranto-storage
+dokku storage:mount restauranto-s3 /var/lib/dokku/data/storage/restauranto-storage:/data
+```
+
+## Configure maximum upload size
+
+```
+sudo dokku plugin:install https://github.com/Zeilenwerk/dokku-nginx-max-upload-size.git
+dokku config:set restauranto-s3 MAX_UPLOAD_SIZE=100M
 ```
 
 ## License
