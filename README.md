@@ -18,7 +18,7 @@ Order is important because dokku-letsencrypt adds 443 port.
 ```
 dokku proxy:report restauranto-s3
 dokku proxy:ports-add restauranto-s3 http:80:9000
-dokku proxy:ports-remove 4estauranto-s3 http:9000:9000
+dokku proxy:ports-remove restauranto-s3 http:9000:9000
 dokku letsencrypt 4estauranto-s3
 dokku letsencrypt:cron-job --add restauranto-s3
 ```
